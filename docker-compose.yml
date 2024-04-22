@@ -1,0 +1,28 @@
+version: "3.5"
+services:
+  
+  vault:
+    image: hashicorp/vault:latest
+    container_name: vault
+    hostname: vault
+    ports:
+      - 8200:8200
+    volumes:
+      - ./vault-config:/vault/config/
+      - ./vault-config/vault-data:/vault/file/
+      - /home/ubuntu/Malware-detection-with-ai/mtls/vault-tls/scripts/certs:/certs
+    environment:
+      - VAULT_ADDR=http://vault:8200
+      # - DD_AGENT_HOST=datadog-agent
+    cap_add:
+      - IPC_LOCK
+    command: server
+    restart: always
+    networks:
+      - confluent  
+
+volumes:
+  vault-data:
+
+networks:
+  confluent:
